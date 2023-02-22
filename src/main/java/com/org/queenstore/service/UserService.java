@@ -21,7 +21,7 @@ public class UserService {
     //cadastrar usuário
     public Optional<User> signup(User user) {
 
-        if (userRepository.findByUser(user.getEmail()).isPresent())
+        if (userRepository.findByEmail(user.getEmail()).isPresent())
             return Optional.empty();
 
         user.setPassword(encryptPassword(user.getPassword()));
@@ -35,7 +35,7 @@ public class UserService {
 
         if(userRepository.findById(user.getId()).isPresent()) {
 
-            Optional<User> getUser = userRepository.findByUser(user.getEmail());
+            Optional<User> getUser = userRepository.findByEmail(user.getEmail());
 
             if ( (getUser.isPresent()) && ( getUser.get().getId() != user.getId()))
                 throw new ResponseStatusException(
@@ -54,7 +54,7 @@ public class UserService {
     //autentica
     public Optional<UserLogin> authenticator(Optional<UserLogin> usuarioLogin) {
 
-        Optional<User> usuario = userRepository.findByUser(usuarioLogin.get().getEmail());
+        Optional<User> usuario = userRepository.findByEmail(usuarioLogin.get().getEmail());
 
         if (usuario.isPresent()) {
 

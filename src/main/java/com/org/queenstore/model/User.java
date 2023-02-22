@@ -5,7 +5,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class User {
     @NotNull(message = "O Atributo Nome é Obrigatório!")
     private String name;
 
-    @Schema(example = "email@email.com.br")//--------------------------------------------
+    //@Schema(example = "email@email.com.br")//--------------------------------------------
     @NotNull(message = "O Atributo Usuário é Obrigatório!")
     @Email(message = "O Atributo Usuário deve ser um email válido!")
     private String email;
