@@ -1,7 +1,7 @@
 package com.org.queenstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.org.queenstore.enums.QuantityPurchase;
+import com.org.queenstore.enums.MethodPayment;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +16,10 @@ public class Purschase {
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
-    private QuantityPurchase quantity_purchase;
+    private MethodPayment methodPayment;
+
+    @NotNull
+    private int quantity_purchase;
 
     @ManyToOne
     @JsonIgnoreProperties("purschase")
@@ -30,8 +33,9 @@ public class Purschase {
     @JsonIgnoreProperties("product")
     private Tag tag;
 
-    public Purschase(Long id, QuantityPurchase quantity_purchase) {
+    public Purschase(Long id, MethodPayment methodPayment, int quantity_purchase) {
         this.id = id;
+        this.methodPayment = methodPayment;
         this.quantity_purchase = quantity_purchase;
     }
 
@@ -46,11 +50,19 @@ public class Purschase {
         this.id = id;
     }
 
-    public QuantityPurchase getQuantity_purchase() {
+    public MethodPayment getMethodPayment() {
+        return methodPayment;
+    }
+
+    public void setMethodPayment(MethodPayment methodPayment) {
+        this.methodPayment = methodPayment;
+    }
+
+    public int getQuantity_purchase() {
         return quantity_purchase;
     }
 
-    public void setQuantity_purchase(QuantityPurchase quantity_purchase) {
+    public void setQuantity_purchase(int quantity_purchase) {
         this.quantity_purchase = quantity_purchase;
     }
 
