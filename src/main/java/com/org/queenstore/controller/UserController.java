@@ -39,7 +39,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserLogin> login(@RequestBody Optional<UserLogin> userLogin) {
-        return userService.autenticarUser(userLogin)
+        return userService.authenticator(userLogin)
                 .map(resposta -> ResponseEntity.ok(resposta))
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
@@ -47,7 +47,7 @@ public class UserController {
     @PostMapping("/logon")
     public ResponseEntity<User> postUsuario(@Valid @RequestBody User usuario) {
 
-        return userService.cadastrarUsuario(usuario)
+        return userService.signup(usuario)
                 .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
                 .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 
@@ -55,7 +55,7 @@ public class UserController {
 
     @PutMapping("/atualizar")
     public ResponseEntity<User> putUsuario(@Valid @RequestBody User user) {
-        return userService.atualizarUsuario(user)
+        return userService.updateUser(user)
                 .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }

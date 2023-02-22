@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository <User, Long> {
-
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUser(String user);
 
-    public List<User> findAllByNameContainingIgnoreCase(@Param("name") String nome);
-
+   public List<User> findAllByNameContainingIgnoreCase(@Param("name") String nome);
 }

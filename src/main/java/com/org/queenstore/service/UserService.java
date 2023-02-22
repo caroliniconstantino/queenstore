@@ -1,12 +1,16 @@
 package com.org.queenstore.service;
 
 import com.org.queenstore.model.User;
+import com.org.queenstore.model.UserLogin;
 import com.org.queenstore.repository.UserRepository;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.charset.Charset;
 import java.util.Optional;
 
 @Service
@@ -14,28 +18,30 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Optional<User> cadastrarUsuario(User user) {
+    //cadastrar usuário
+    public Optional<User> signup(User user) {
 
-        if (userRepository.findByUser(usuario.getUsuario()).isPresent())
+        if (userRepository.findByUser(user.getEmail()).isPresent())
             return Optional.empty();
 
-        user.setPassword(criptografarSenha(user.getPassword()));
+        user.setPassword(encryptPassword(user.getPassword()));
 
         return Optional.of(userRepository.save(user));
 
     }
 
-    public Optional<User> atualizarUsuario(User user) {
+    //atualiza usuário
+    public Optional<User> updateUser(User user) {
 
         if(userRepository.findById(user.getId()).isPresent()) {
 
-            Optional<User> buscaUsuario = userRepository.findByUser(user.getUser());
+            Optional<User> getUser = userRepository.findByUser(user.getEmail());
 
-            if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != user.getId()))
+            if ( (getUser.isPresent()) && ( getUser.get().getId() != user.getId()))
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 
-            user.setPassword(criptografarSenha(user.getPassword()));
+            user.setPassword(encryptPassword(user.getPassword()));
 
             return Optional.ofNullable(userRepository.save(user));
 
@@ -45,20 +51,21 @@ public class UserService {
 
     }
 
-    public Optional<UserLogin> autenticarUser(Optional<UserLogin> usuarioLogin) {
+    //autentica
+    public Optional<UserLogin> authenticator(Optional<UserLogin> usuarioLogin) {
 
-        Optional<User> usuario = userRepository.findByUser(usuarioLogin.get().getUser());
+        Optional<User> usuario = userRepository.findByUser(usuarioLogin.get().getEmail());
 
         if (usuario.isPresent()) {
 
-            if (compararSenhas(usuarioLogin.get().getPassword(), usuario.get().getPassword())) {
-//utiliza-se usuarioLogin p pegar oq o usuario está digitando no login e usuario para pegar a info do banco
+            if (compararPassword(usuarioLogin.get().getPassword(), usuario.get().getPassword())) {
+
                 usuarioLogin.get().setId(usuario.get().getId());
                 usuarioLogin.get().setName(usuario.get().getName());
                 usuarioLogin.get().setEmail(usuario.get().getEmail());
                 usuarioLogin.get().setPassword(usuario.get().getPassword());
                 usuarioLogin.get().setRole(usuario.get().getRole());
-                usuarioLogin.get().setToken(gerarBasicToken(usuarioLogin.get().getUsuario()));
+                usuarioLogin.get().setToken(gerarBasicToken(usuarioLogin.get().getEmail(), usuarioLogin.get().getPassword()));
 
                 return usuarioLogin;
 
@@ -69,15 +76,16 @@ public class UserService {
 
     }
 
-    private String criptografarSenha(String senha) {
+    //criptografa a senha
+    private String encryptPassword(String password) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        return encoder.encode(senha);
+        return encoder.encode(password);
 
     }
 
-    private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
+    private boolean compararPassword(String senhaDigitada, String senhaBanco) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -85,7 +93,7 @@ public class UserService {
 
     }
 
-    //------------------------------GERA O TOKEN------------------------------
+
     private String gerarBasicToken(String usuario, String senha) {
 
         String token = usuario + ":" + senha;
