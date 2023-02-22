@@ -33,14 +33,14 @@ public class UserControllerTest {
     void start(){
         userRepository.deleteAll();
 
-        userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "Av Brasil 1000", "Colcci"));
+        userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "", "Av Brasil 1000", "Colcci"));
     }
 
     @Test
     @DisplayName("Cadastrar Um Usuário")
     public void deveCriarUmUsuario() {
 
-        HttpEntity<User> corpoRequisicao = new HttpEntity<User>(new User(0l, "Novo usuário", "newuser@email.com", "abc", Role.SELLER, "293829382", "Av Brasil 1000", "Zara"));
+        HttpEntity<User> corpoRequisicao = new HttpEntity<User>(new User(0l, "Novo usuário", "newuser@email.com", "abc", Role.SELLER, "","293829382", "Av Brasil 1000", "Zara"));
 
         ResponseEntity<User> corpoResposta = testRestTemplate
                 .exchange("/users/logon", HttpMethod.POST, corpoRequisicao, User.class);
@@ -55,9 +55,9 @@ public class UserControllerTest {
     @DisplayName("Não deve permitir duplicação do Usuário")
     public void naoDeveDuplicarUsuario() {
 
-        userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "Av Brasil 1000", "Adidas"));
+        userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "", "Av Brasil 1000", "Adidas"));
 
-        HttpEntity<User> corpoRequisicao = new HttpEntity<User>(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "Av Brasil 1000", "Adidas"));
+        HttpEntity<User> corpoRequisicao = new HttpEntity<User>(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "", "Av Brasil 1000", "Adidas"));
 
         ResponseEntity<User> corpoResposta = testRestTemplate
                 .exchange("/users/logon", HttpMethod.POST, corpoRequisicao, User.class);
@@ -69,10 +69,10 @@ public class UserControllerTest {
     @DisplayName("Atualizar um Usuário")
     public void deveAtualizarUmUsuario() {
 
-        Optional<User> usuarioCadastrado = userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.SELLER, "293829382", "Av Brasil 1000", "Colcci"));
+        Optional<User> usuarioCadastrado = userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.SELLER, "","293829382", "Av Brasil 1000", "Colcci"));
 
         User usuarioUpdate = new User(usuarioCadastrado.get().getId(),
-        "Nova Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "Av Brasil 1000", "Colcci");
+        "Nova Rute", "rute@email.com", "abc", Role.CLIENT, "","293829382", "Av Brasil 1000", "Colcci");
 
         HttpEntity<User> corpoRequisicao = new HttpEntity<User>(usuarioUpdate);
 
@@ -89,10 +89,10 @@ public class UserControllerTest {
     @DisplayName("Listar todos os Usuários")
     public void deveMostrarTodosUsuarios() {
 
-        userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "Av Brasil 1000", "Colcci"));
+        userService.signup(new User(0l, "Rute", "rute@email.com", "abc", Role.CLIENT, "293829382", "", "Av Brasil 1000", "Colcci"));
 
         userService.signup(new User(0L,
-                "Ricardo Marques", "ricardo_marques@email.com.br", "ricardo123", Role.SELLER, "293829382", "Av Brasil 1000", "Colcci"));
+                "Ricardo Marques", "ricardo_marques@email.com.br", "ricardo123", Role.SELLER, "","293829382", "Av Brasil 1000", "Colcci"));
 
         ResponseEntity<String> resposta = testRestTemplate
                 .withBasicAuth("rute@email.com", "abc")

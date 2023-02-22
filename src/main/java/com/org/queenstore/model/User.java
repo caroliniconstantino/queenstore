@@ -32,7 +32,10 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    private String register;
+
+    private String cpf;
+
+    private String cnpj;
 
     private String address;
 
@@ -48,13 +51,14 @@ public class User {
     private List<Purschase> purschases ;
 
 
-    public User(Long id, String name, String email, String password, Role role, String register, String address, String brand) {
+    public User(Long id, String name, String email, String password, Role role, String cpf, String cnpj, String address, String brand) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.register = register;
+        this.cpf = cpf;
+        this.cnpj = cnpj;
         this.address = address;
         this.brand = brand;
     }
@@ -103,12 +107,20 @@ public class User {
         this.role = role;
     }
 
-    public String getRegister() {
-        return register;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setRegister(String register) {
-        this.register = register;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getAddress() {
