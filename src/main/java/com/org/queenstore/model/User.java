@@ -3,7 +3,11 @@ package com.org.queenstore.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -15,7 +19,7 @@ public class User {
     @NotNull(message = "O Atributo Nome é Obrigatório!")
     private String name;
 
- @Schema(example = "email@email.com.br")//--------------------------------------------
+    @Schema(example = "email@email.com.br")//--------------------------------------------
     @NotNull(message = "O Atributo Usuário é Obrigatório!")
     @Email(message = "O Atributo Usuário deve ser um email válido!")
     private String email;
@@ -34,9 +38,14 @@ public class User {
 
     private String brand;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    @JsonIgnoreProperties("user")
-//    private List<Product> product;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("user")
+    private List<Product> product;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("user")
+    private List<Purschase> purschases ;
 
 
     public User(Long id, String name, String email, String password, String role, String cpf, String address, String cnpj, String brand) {
@@ -125,5 +134,21 @@ public class User {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public List<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<Product> product) {
+        this.product = product;
+    }
+
+    public List<Purschase> getPurschases() {
+        return purschases;
+    }
+
+    public void setPurschases(List<Purschase> purschases) {
+        this.purschases = purschases;
     }
 }

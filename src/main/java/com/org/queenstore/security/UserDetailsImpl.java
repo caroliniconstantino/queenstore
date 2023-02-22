@@ -1,5 +1,6 @@
 package com.org.queenstore.security;
 
+import com.org.queenstore.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,8 +16,8 @@ public class UserDetailsImpl implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public UserDetailsImpl (User user){
-        this.userName = user.getUsuario();
-        this.password = user.getSenha();
+        this.userName = user.getEmail();
+        this.password = user.getPassword();
     }
 
     public UserDetailsImpl(){ }
