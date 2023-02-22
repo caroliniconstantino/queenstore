@@ -23,16 +23,16 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAll(){
-        return ResponseEntity.ok(usuarioRepository.findAll());
+        return ResponseEntity.ok(userRepository.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id) {
-        return usuarioRepository.findById(id)
+        return userRepository.findById(id)
                 .map(resposta -> ResponseEntity.ok(resposta))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -53,7 +53,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/atualizar")
+    @PutMapping("/update")
     public ResponseEntity<User> putUsuario(@Valid @RequestBody User user) {
         return userService.updateUser(user)
                 .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
@@ -63,11 +63,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
-        Optional<User> user = usuarioRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
 
         if(user.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        usuarioRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 }

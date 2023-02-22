@@ -1,14 +1,22 @@
 package com.org.queenstore.model;
 
+import com.org.queenstore.enums.Role;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
+
 public class UserLogin {
     private Long id;
     private String name;
     private String email;
     private String password;
-    private String role;
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
     private String token;
 
-    public UserLogin(Long id, String name, String email, String password, String role, String token) {
+    public UserLogin(Long id, String name, String email, String password, Role role, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -49,11 +57,7 @@ public class UserLogin {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

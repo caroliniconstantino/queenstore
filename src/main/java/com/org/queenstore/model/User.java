@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.org.queenstore.enums.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class User {
     @NotNull(message = "O Atributo Nome é Obrigatório!")
     private String name;
 
-    @Schema(example = "email@email.com.br")//--------------------------------------------
+    @Schema(example = "email@email.com.br")
     @NotNull(message = "O Atributo Usuário é Obrigatório!")
     @Email(message = "O Atributo Usuário deve ser um email válido!")
     private String email;
@@ -28,13 +29,12 @@ public class User {
     private String password;
 
     @NotNull
-    private String role;
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
-    private String cpf;
+    private String register;
 
     private String address;
-
-    private String cnpj;
 
     private String brand;
 
@@ -48,15 +48,14 @@ public class User {
     private List<Purschase> purschases ;
 
 
-    public User(Long id, String name, String email, String password, String role, String cpf, String address, String cnpj, String brand) {
+    public User(Long id, String name, String email, String password, Role role, String register, String address, String brand) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.cpf = cpf;
+        this.register = register;
         this.address = address;
-        this.cnpj = cnpj;
         this.brand = brand;
     }
 
@@ -96,20 +95,20 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getRegister() {
+        return register;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setRegister(String register) {
+        this.register = register;
     }
 
     public String getAddress() {
@@ -118,14 +117,6 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
     }
 
     public String getBrand() {
