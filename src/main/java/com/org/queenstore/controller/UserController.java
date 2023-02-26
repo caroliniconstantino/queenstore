@@ -44,16 +44,16 @@ public class UserController {
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
-    @PostMapping("/logon")
-    public ResponseEntity<User> postUsuario(@Valid @RequestBody User usuario) {
+    @PostMapping("/signup")
+    public ResponseEntity<User> postUsuario(@Valid @RequestBody User user) {
 
-        return userService.signup(usuario)
+        return userService.signup(user)
                 .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
                 .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 
     }
 
-    @PutMapping("/atualizar")
+    @PutMapping("/update")
     public ResponseEntity<User> putUsuario(@Valid @RequestBody User user) {
         return userService.updateUser(user)
                 .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
